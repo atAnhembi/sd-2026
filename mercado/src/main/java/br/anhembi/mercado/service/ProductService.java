@@ -16,12 +16,12 @@ public class ProductService {
     private ProductRepo repo;
 
     public Optional<Product> getProduct(long id) {
-        return repo.getProduct(id);
+        return repo.findById(id);
 
     }
 
     public List<Product> getAll() {
-        return repo.getAll();
+        return (List<Product>) repo.findAll();
     }
 
 }
