@@ -1,5 +1,6 @@
 package br.anhembi.mercado.model;
 
+import br.anhembi.mercado.dto.ProductDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,26 +8,34 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Product {
-    @Id
+    @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private double price;
 
     public Product() {
     }
 
-    public Product(long id, String name, double price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
+    public Product(String name, double price) {
+        this(null, name, price);
+    }
+
+    public Product(Long id, String name, double price) {
+        setId(id);
+        setName(name);
+        setPrice(price);
+    }
+    
+    public ProductDTO toDTO () {
+        return new ProductDTO(this);
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
