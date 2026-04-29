@@ -19,8 +19,7 @@ public class ProductDTO {
     }
 
     public Product toProduct() {
-        Product result = new Product(null, name, price);
-        return result;
+        return new Product(null, name, price);
     }
 
     public String getName() {

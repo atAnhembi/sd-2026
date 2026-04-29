@@ -44,27 +44,28 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable long id) {
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
+        if(service.deleteById(id)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Product> insert(@RequestBody @Valid ProductDTO dto) {
-        ResponseEntity<Product> result = ResponseEntity.badRequest().build();
-        Optional<Product> product = service.insert(dto);
-        if (product.isPresent()) {
-            result = ResponseEntity.status(HttpStatus.CREATED).body(product.get());
+    public ResponseEntity<Product> insert(@RequestBody @Valid ProductDTO productDTO) {
+        Optional<Product> productOptional = service.insert(productDTO);
+        if(productOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(productOptional.get());
         }
-        return (result);
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping
     public ResponseEntity<Boolean> updateAll(@RequestBody Product product) {
-        ResponseEntity<Boolean> result = ResponseEntity.badRequest().build();
-        if (service.updateAll(product)) {
-            result = ResponseEntity.ok().build();
-        }
-        return (result);
+         boolean updated = service.updateAll(product);
+         if(updated) {
+            return ResponseEntity.ok().build();
+         }
+         return ResponseEntity.badRequest().build();
     }
 
     @PatchMapping
