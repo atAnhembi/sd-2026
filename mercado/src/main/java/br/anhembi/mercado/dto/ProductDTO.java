@@ -1,5 +1,6 @@
 package br.anhembi.mercado.dto;
 
+import br.anhembi.mercado.model.Fornecedor;
 import br.anhembi.mercado.model.Product;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +10,15 @@ public class ProductDTO {
     private String name;
     @Min(1)
     private double price;
+    private Fornecedor fornecedor;
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
 
     public ProductDTO() {
     }
@@ -19,7 +29,8 @@ public class ProductDTO {
     }
 
     public Product toProduct() {
-        return new Product(null, name, price);
+        Product result = new Product(null, name, price, fornecedor);
+        return result;
     }
 
     public String getName() {

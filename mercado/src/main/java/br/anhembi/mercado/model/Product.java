@@ -1,10 +1,15 @@
 package br.anhembi.mercado.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.anhembi.mercado.dto.ProductDTO;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Product {
@@ -13,6 +18,11 @@ public class Product {
     private Long id;
     private String name;
     private double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_fornecedor", nullable = false)
+    @JsonIgnoreProperties("products")
+    private Fornecedor fornecedor;
 
     public Product() {
     }
@@ -26,12 +36,19 @@ public class Product {
         setName(name);
         setPrice(price);
     }
-    
-    public ProductDTO toDTO () {
+
+    public Product(Long id, String name, double price, Fornecedor fornecedor) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.fornecedor = fornecedor;
+    }
+
+    public ProductDTO toDTO() {
         return new ProductDTO(this);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -53,6 +70,14 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
 }
